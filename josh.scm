@@ -234,7 +234,7 @@
 ;; (prove6 '() goals db empty 1 '())
 
 ;;; for Jos'h
-(define db '(
+(define basic-db '(
 	     ((entity player nil))
 	     ((position player (0 0 0)))
 	     ((model player m57))
@@ -249,10 +249,41 @@
 	     ((about treasure2 "Dictionary of mythical animals, middle pages missing."))
   ))
 
-(define goals '(
+(define basic-goals '(
 		(entity (? X) nil)
 		(position (? X) (? POS))
 		(model (? X) (? M))
 		))
 
-;(prove6 '() goals db empty 1 '())
+					;(prove6 '() goals db empty 1 '())
+
+;;; for Jos'h - again, but with a Rule for drawInfo (see bottom of db)
+(define db '(
+	     ((entity player nil))
+	     ((position player (0 0 0)))
+	     ((model player m57))
+	     ((about player "seeker of lightly used gym socks"))
+	     ((entity treasure1 nil))
+	     ((position treasure1 (10 3 0)))
+	     ((model treasure1 m171))
+	     ((about treasure1 "A pair of lightly used gym socks"))
+	     ((entity treasure2 nil))
+	     ((position treasure2 (9 -5 0)))
+	     ((model treasure2 m99))
+	     ((about treasure2 "Dictionary of mythical animals, middle pages missing."))
+	     ((drawInfo (? entity) (? position) (? model))
+	      (entity (? entity) nil)
+	      (position (? entity) (? position))
+	      (model (? entity) (? model)))
+	      
+  ))
+
+(define goals '((drawInfo (? entity) (? position) (? model))))
+
+
+(define (basic-test)
+  (prove6 '() basic-goals basic-db empty 1 '()))
+(define (test)
+  (prove6 '() goals db empty 1 '()))
+
+
